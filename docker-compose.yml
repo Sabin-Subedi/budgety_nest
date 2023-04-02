@@ -1,0 +1,21 @@
+version: '3.0'
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5480:5432"
+    env_file:
+      - .postgres
+    volumes:
+      - budgety_nestjs_local_db:/var/lib/postgresql/data
+      - budgety_nestjs_local_backups:/backups
+    restart: always
+volumes:
+  budgety_nestjs_local_db: 
+    driver: local
+    
+  budgety_nestjs_local_backups: 
+    driver: local
+  
+    
