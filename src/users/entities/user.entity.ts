@@ -25,4 +25,6 @@ export class UserEntity implements User {
   lastLogin: Date;
   @Exclude()
   active: boolean;
+
+  created_at: Date;
 }

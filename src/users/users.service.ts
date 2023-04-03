@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -6,8 +6,11 @@ import { PrismaService } from 'nestjs-prisma';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
+
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return this.prisma.user.create({
+      data: createUserDto,
+    });
   }
 
   findAll() {
@@ -36,7 +39,15 @@ export class UsersService {
     });
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
+
+    if (user?.is_deleted) throw new HttpException('User Not Found', 404);
+
     return this.prisma.user.update({
       where: {
         id,
