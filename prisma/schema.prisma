@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,28 +11,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String
+  username   String
+  lastLogin  DateTime?
+  active     Boolean   @default(true)
+  is_deleted Boolean   @default(false)
+  deleted_at DateTime?
+  Profile    Profile?
+
+  @@unique([is_deleted, deleted_at])
 }
 
 model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
+  id String @id @default(uuid())
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
