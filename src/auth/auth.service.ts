@@ -36,10 +36,10 @@ export class AuthService {
       );
 
     return {
-      access_token: await this.tokenService.signAccessToken({
+      ...(await this.tokenService.signTokenPair({
         sub: user.id,
         email: user.email,
-      }),
+      })),
     };
   }
 

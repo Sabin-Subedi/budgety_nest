@@ -11,9 +11,11 @@ import { TokenModule } from './token/token.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env.development',
+      envFilePath: ['.env', '.env.development'],
     }),
-    PrismaModule.forRoot({}),
+    PrismaModule.forRoot({
+      isGlobal: true,
+    }),
     UsersModule,
     AuthModule,
     TokenModule,

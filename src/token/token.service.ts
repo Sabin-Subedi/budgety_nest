@@ -7,7 +7,29 @@ export class TokenService {
   signAccessToken(payload: Record<string, string>) {
     return this.jwtService.signAsync(payload, {
       secret: process.env.ACCESS_TOKEN_SECRET,
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '10s',
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '10',
+    });
+  }
+
+  signRefreshToken(payload: Record<string, string>) {
+    return this.jwtService.signAsync(payload, {
+      secret: process.env.REFRESH_TOKEN_SECRET,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY || '10',
+    });
+  }
+
+  async signTokenPair(payload: Record<string, string>) {
+    const access_token = await this.signAccessToken(payload);
+    const refresh_token = await this.signRefreshToken(payload);
+    return {
+      access_token,
+      refresh_token,
+    };
+  }
+
+  async verifyAccessToken(token: string) {
+    return this.jwtService.verifyAsync(token, {
+      secret: process.env.ACCESS_TOKEN_SECRET,
     });
   }
 }
