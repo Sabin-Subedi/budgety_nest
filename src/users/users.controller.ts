@@ -1,22 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  ClassSerializerInterceptor,
+  Controller,
   Delete,
-  UseInterceptors,
-  SerializeOptions,
+  Get,
   HttpException,
   HttpStatus,
-  ClassSerializerInterceptor,
+  Param,
+  Patch,
+  Post,
+  UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
+import { UsersService } from './users.service';
 
 @ApiTags('users')
 @Controller('users')
@@ -50,9 +49,11 @@ export class UsersController {
     return new UserEntity(user);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
   @ApiCreatedResponse({ type: UserEntity })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
     return new UserEntity(await this.usersService.update(id, updateUserDto));
   }
 
