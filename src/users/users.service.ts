@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -20,6 +20,18 @@ export class UsersService {
         is_deleted: false,
       },
     });
+  }
+
+  async findUserByEmail(email: string) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        email,
+      },
+    });
+
+    if (user?.is_deleted && !user?.active) throw new NotFoundException();
+
+    return user;
   }
 
   findOne(id: string) {

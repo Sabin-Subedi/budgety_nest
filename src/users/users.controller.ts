@@ -8,11 +8,9 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -21,13 +19,6 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @UseInterceptors(ClassSerializerInterceptor)
-  @Post()
-  @ApiCreatedResponse({ type: UserEntity })
-  async create(@Body() createUserDto: CreateUserDto) {
-    return new UserEntity(await this.usersService.create(createUserDto));
-  }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
