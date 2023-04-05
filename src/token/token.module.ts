@@ -1,21 +1,28 @@
 import { Module } from '@nestjs/common';
 import { TokenService } from './token.service';
 import { JwtModule } from '@nestjs/jwt';
+import {
+  DEFAULT_JWT_AUDIENCE,
+  DEFAULT_JWT_EXPIRY,
+  DEFAULT_JWT_ISSUER,
+  DEFAULT_JWT_MAX_AGE,
+  DEFAULT_JWT_SECRET,
+} from '@constants';
 
 @Module({
   imports: [
     JwtModule.register({
       global: true,
-      secret: process.env.DEFAULT_JWT_SECRET || 'jwt-secret',
+      secret: DEFAULT_JWT_SECRET,
       signOptions: {
-        expiresIn: process.env.DEFAULT_JWT_EXPIRY || '10s',
-        audience: process.env.DEFAULT_JWT_AUDIENCE || 'budgety-audience',
-        issuer: process.env.DEFAULT_JWT_ISSUER || 'budgety-issuer',
+        expiresIn: DEFAULT_JWT_EXPIRY,
+        audience: DEFAULT_JWT_AUDIENCE,
+        issuer: DEFAULT_JWT_ISSUER,
       },
       verifyOptions: {
-        audience: process.env.DEFAULT_JWT_AUDIENCE || 'budgety-audience',
-        issuer: process.env.DEFAULT_JWT_ISSUER || 'budgety-issuer',
-        maxAge: process.env.DEFAULT_JWT_MAX_AGE || '10s',
+        audience: DEFAULT_JWT_AUDIENCE,
+        issuer: DEFAULT_JWT_ISSUER,
+        maxAge: DEFAULT_JWT_MAX_AGE || '10s',
       },
     }),
   ],

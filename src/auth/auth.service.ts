@@ -40,6 +40,7 @@ export class AuthService {
         sub: user.id,
         email: user.email,
       })),
+      refresh_expiry: process.env.REFERESH_TOKEN_EXPIRY,
     };
   }
 
@@ -53,5 +54,20 @@ export class AuthService {
     createUserDto.password = hashedPassword;
 
     return this.userService.create(createUserDto);
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const payload = await this.tokenService.verifyRefreshToken(refreshToken);
+      const user = await this.userService.findOne(payload.sub);
+
+      if (!user) throw new UnauthorizedException();
+      return this.tokenService.signTokenPair({
+        sub: user.id,
+        email: user.email,
+      });
+    } catch (err) {
+      throw new UnauthorizedException(err?.message);
+    }
   }
 }

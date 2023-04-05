@@ -27,4 +27,9 @@ export class AuthController {
   async signUp(@Body() createAuthDto: CreateUserDto) {
     return new UserEntity(await this.authService.signUp(createAuthDto));
   }
+
+  @Post('refresh')
+  async refresh(@Body() createAuthDto: any) {
+    return this.authService.refreshToken(createAuthDto.refresh_token);
+  }
 }

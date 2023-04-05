@@ -11,6 +11,12 @@ services:
       - budgety_nestjs_local_db:/var/lib/postgresql/data
       - budgety_nestjs_local_backups:/backups
     restart: always
+  budgety_redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+  
 volumes:
   budgety_nestjs_local_db: 
     driver: local
