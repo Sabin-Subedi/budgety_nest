@@ -18,8 +18,14 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    return next
-      .handle()
-      .pipe(map((data) => ({ data, status: 200, message: 'success' })));
+    const res = context.switchToHttp().getResponse();
+
+    return next.handle().pipe(
+      map((data) => ({
+        data,
+        status: res.statusCode || 200,
+        message: 'success',
+      })),
+    );
   }
 }
