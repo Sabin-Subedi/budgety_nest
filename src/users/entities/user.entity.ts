@@ -26,5 +26,8 @@ export class UserEntity implements User {
   @Exclude()
   active: boolean;
 
+  @Exclude()
+  roleId: string;
+
   created_at: Date;
 }

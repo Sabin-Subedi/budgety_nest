@@ -15,7 +15,6 @@ import { AuthGuard } from './auth/auth.guard';
 import { CategoriesModule } from './categories/categories.module';
 import { RolesService } from './roles/roles.service';
 import { RolesModule } from './roles/roles.module';
-import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
