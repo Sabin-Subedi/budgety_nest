@@ -9,5 +9,6 @@ export const DEFAULT_JWT_AUDIENCE = process.env.DEFAULT_JWT_AUDIENCE;
 export const DEFAULT_JWT_MAX_AGE = process.env.DEFAULT_JWT_MAX_AGE;
 export const DEFAULT_JWT_EXPIRY = process.env.DEFAULT_JWT_EXPIRY;
 export const DEFAULT_JWT_SECRET = process.env.DEFAULT_JWT_SECRET;
+export const BLACKLIST_TOKEN_INITIAL = process.env.BLACKLIST_TOKEN_INITIAL;
 
 export const REDIS_URL = process.env.REDIS_URL;

@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { getTimeDifferenceInSeconds } from '@utils';
 import * as bcrypt from 'bcrypt';
 import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -58,13 +59,24 @@ export class AuthService {
 
   async refreshToken(refreshToken: string) {
     try {
+      const isBlackListed = await this.tokenService.checkIfTokenIsInBlacklist(
+        refreshToken,
+      );
+      if (isBlackListed) throw new UnauthorizedException('Invalid Token');
       const payload = await this.tokenService.verifyRefreshToken(refreshToken);
       const user = await this.userService.findOne(payload.sub);
 
-      if (!user) throw new UnauthorizedException();
+      if (!user) throw new UnauthorizedException('Invalid Token');
+
+      await this.tokenService.setTokenInBlacklist(
+        refreshToken,
+        getTimeDifferenceInSeconds(payload.exp * 1000),
+      );
+
       return this.tokenService.signTokenPair({
         sub: user.id,
         email: user.email,
+        iat: payload.iat,
       });
     } catch (err) {
       throw new UnauthorizedException(err?.message);

@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@prisma-service": ["./src/prisma/prisma.service"],
-      "@constants":["./src/constant/index"]
+      "@constants":["./src/constant/index"],
+      "@utils":["./src/utils/index"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule, CacheStore, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import { redisStore } from 'cache-manager-redis-store';
 import { REDIS_URL } from './constant/env';
-import redis from 'redis';
+import type { RedisClientOptions } from 'redis';
 
 @Module({
   imports: [
@@ -19,14 +19,13 @@ import redis from 'redis';
     PrismaModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.register({
+    CacheModule.registerAsync<RedisClientOptions>({
       isGlobal: true,
-
-      // @ts-ignore
-      store: async () =>
-        await redisStore({
-          url: REDIS_URL,
-        }),
+      useFactory: async () => ({
+        store: redisStore as unknown as CacheStore,
+        url: REDIS_URL,
+        ttl: 60 * 60 * 24,
+      }),
     }),
     UsersModule,
     AuthModule,
