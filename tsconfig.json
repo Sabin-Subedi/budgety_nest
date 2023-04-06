@@ -20,7 +20,8 @@
     "paths": {
       "@prisma-service": ["./src/prisma/prisma.service"],
       "@constants":["./src/constant/index"],
-      "@utils":["./src/utils/index"]
+      "@utils":["./src/utils/index"],
+      "@permissions":["./src/permissions/index"],
     }
   }
 }
