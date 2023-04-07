@@ -105,7 +105,7 @@ model Permission {
 model RolePermissions {
   Role         Role       @relation(fields: [roleId], references: [id])
   roleId       String
-  Permission   Permission @relation(fields: [permissionId], references: [id])
+  Permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
   permissionId String
 
   @@id([roleId, permissionId])
