@@ -17,9 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-
-    "load:roles": "ts-node script/builtin_roles.ts"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^9.3.12",
@@ -88,6 +86,8 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "migrate:postgres": "dotenv -e .env.development -- npx prisma migrate deploy"
+    "migrate:postgres": "dotenv -e .env.development -- npx prisma migrate deploy",
+    "update_permission": "ts-node script/update_permission.ts",
+    "load:roles": "ts-node script/builtin_roles.ts"
   }
 }
