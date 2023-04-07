@@ -13,3 +13,11 @@ export const ROLES_API = [
   ['roles-detail', 'patch'],
   ['roles-detail', 'delete'],
 ];
+
+export const USERS_API = [
+  ['users', 'get'],
+  ['users', 'post'],
+  ['users-detail', 'get'],
+  ['users-detail', 'patch'],
+  ['users-detail', 'delete'],
+];
