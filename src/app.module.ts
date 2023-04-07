@@ -15,6 +15,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { CategoriesModule } from './categories/categories.module';
 import { RolesService } from './roles/roles.service';
 import { RolesModule } from './roles/roles.module';
+import { RolesGuard } from './roles/roles.guard';
 
 @Module({
   imports: [
@@ -40,12 +41,16 @@ import { RolesModule } from './roles/roles.module';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
-    PrismaService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    AppService,
+    PrismaService,
     RolesService,
   ],
 })
