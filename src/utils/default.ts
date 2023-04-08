@@ -3,7 +3,9 @@ export const getUrlPermission = (
   handlerName: string,
   method: string,
 ) => {
-  let routeName = urlName.concat(handlerName);
+  let routeName = urlName.concat(
+    handlerName.startsWith(':') ? handlerName : `/${handlerName}`,
+  );
 
   if (routeName.endsWith('/')) {
     routeName = routeName.slice(0, -1);

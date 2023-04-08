@@ -76,7 +76,6 @@ export class AuthService {
       return this.tokenService.signTokenPair({
         sub: user.id,
         email: user.email,
-        iat: payload.iat,
       });
     } catch (err) {
       throw new UnauthorizedException(err?.message);

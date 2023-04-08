@@ -8,12 +8,14 @@ import {
   HttpStatus,
   Param,
   Patch,
+  Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
+import { UserRoleEntity } from './entities/user-role.entity';
 
 @ApiTags('users')
 @Controller('users')
@@ -31,6 +33,15 @@ export class UsersController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @Get('me')
+  @ApiOkResponse({ type: UserRoleEntity })
+  async getMe(@Request() request) {
+    return new UserRoleEntity(
+      await this.usersService.getUserCompleteProfile(request.user.sub),
+    );
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
   async findOne(@Param('id') id: string) {
@@ -44,7 +55,6 @@ export class UsersController {
   @Patch(':id')
   @ApiCreatedResponse({ type: UserEntity })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
     return new UserEntity(await this.usersService.update(id, updateUserDto));
   }
 

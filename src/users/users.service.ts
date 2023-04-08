@@ -49,6 +49,30 @@ export class UsersService {
     });
   }
 
+  getUserCompleteProfile(id: string) {
+    return this.prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        Profile: true,
+        UserRoles: {
+          include: {
+            Role: {
+              include: {
+                RolePermissions: {
+                  include: {
+                    Permission: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   async remove(id: string) {
     const user = await this.prisma.user.findUniqueOrThrow({
       where: {

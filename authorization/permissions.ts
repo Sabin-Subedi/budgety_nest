@@ -17,6 +17,7 @@ export const ROLES_API = [
 export const USERS_API = [
   ['users', 'get'],
   ['users', 'post'],
+  ['users-me', 'get'],
   ['users-detail', 'get'],
   ['users-detail', 'patch'],
   ['users-detail', 'delete'],
