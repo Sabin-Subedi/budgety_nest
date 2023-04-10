@@ -16,6 +16,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { RolesService } from './roles/roles.service';
 import { RolesModule } from './roles/roles.module';
 import { RolesGuard } from './roles/roles.guard';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { RolesGuard } from './roles/roles.guard';
     TokenModule,
     CategoriesModule,
     RolesModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [
