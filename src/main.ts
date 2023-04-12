@@ -10,7 +10,7 @@ import { ResponseInterceptor } from './response/response.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.setViewEngine('pug');
+  app.setViewEngine('hbs');
   app.useStaticAssets(join(__dirname, '..', 'public', 'static'));
   app.setBaseViewsDir(join(__dirname, '..', '..', 'public', 'templates'));
   app.setGlobalPrefix('/api');

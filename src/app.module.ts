@@ -1,5 +1,5 @@
 import { MailerModule } from '@nestjs-modules/mailer';
-import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { CacheModule, CacheStore, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -27,6 +27,7 @@ import { RolesService } from './roles/roles.service';
 import { TokenModule } from './token/token.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -44,26 +45,12 @@ import { UsersModule } from './users/users.module';
         ttl: 60 * 60 * 24,
       }),
     }),
-    MailerModule.forRootAsync({
+
+    BullModule.forRootAsync({
       useFactory: () => ({
-        transport: {
-          host: EMAIL_SMTP_HOST,
-          port: +EMAIL_SMTP_PORT,
-          secure: false,
-          auth: {
-            user: EMAIL_SMTP_USER,
-            pass: EMAIL_SMTP_PASSWORD,
-          },
-        },
-        defaults: {
-          from: 'noreply@budgety.com',
-        },
-        template: {
-          adapter: new PugAdapter(),
-          dir: join(BASE_PATH, 'public', 'templates'),
-          options: {
-            strict: true,
-          },
+        redis: {
+          host: 'localhost',
+          port: 6379,
         },
       }),
     }),

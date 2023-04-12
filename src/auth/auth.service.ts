@@ -92,7 +92,7 @@ export class AuthService {
   }
 
   async forgotPassword(email: string) {
-    this.mailService.sendMail(email, 'sabin');
-    return { message: 'Email sent' };
+    await this.mailService.sendForgotPasswordEmail(email);
+    return { message: 'Email is sent' };
   }
 }
