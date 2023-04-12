@@ -12,3 +12,8 @@ export const DEFAULT_JWT_SECRET = process.env.DEFAULT_JWT_SECRET;
 export const BLACKLIST_TOKEN_INITIAL = process.env.BLACKLIST_TOKEN_INITIAL;
 
 export const REDIS_URL = process.env.REDIS_URL;
+
+export const EMAIL_SMTP_HOST = process.env.EMAIL_SMTP_HOST;
+export const EMAIL_SMTP_PORT = process.env.EMAIL_SMTP_PORT;
+export const EMAIL_SMTP_USER = process.env.EMAIL_SMTP_USER;
+export const EMAIL_SMTP_PASSWORD = process.env.EMAIL_SMTP_PASSWORD;

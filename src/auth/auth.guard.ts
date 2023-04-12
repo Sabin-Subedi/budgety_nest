@@ -27,8 +27,12 @@ export class AuthGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
+
     if (!token) {
       throw new UnauthorizedException("Authorization header doesn't exist");
+    }
+    if (Boolean(await this.tokenService.checkIfTokenIsInBlacklist(token))) {
+      throw new UnauthorizedException('Token is in blacklist');
     }
     try {
       const payload = await this.tokenService.verifyAccessToken(token);

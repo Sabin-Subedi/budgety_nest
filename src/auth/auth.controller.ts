@@ -2,14 +2,16 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  HttpException,
+  HttpStatus,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { Public } from '@permissions';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { Public } from '@permissions';
 
 @Public()
 @Controller('auth')
@@ -32,5 +34,15 @@ export class AuthController {
   @Post('refresh')
   async refresh(@Body() createAuthDto: any) {
     return this.authService.refreshToken(createAuthDto.refresh_token);
+  }
+
+  @Post('logout')
+  async logout(@Body() createAuthDto: any) {
+    try {
+      this.authService.logout(createAuthDto.refresh_token);
+      return { message: 'Logout successful' };
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.FAILED_DEPENDENCY);
+    }
   }
 }

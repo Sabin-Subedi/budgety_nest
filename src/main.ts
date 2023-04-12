@@ -1,12 +1,19 @@
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
+import { join } from 'path';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './response/response.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.setViewEngine('pug');
+  app.useStaticAssets(join(__dirname, '..', 'public', 'static'));
+  app.setBaseViewsDir(join(__dirname, '..', '..', 'public', 'templates'));
+  app.setGlobalPrefix('/api');
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -15,8 +22,6 @@ async function bootstrap() {
       enableDebugMessages: true,
     }),
   );
-
-  app.setGlobalPrefix('/api');
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(

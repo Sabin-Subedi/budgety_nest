@@ -1,10 +1,11 @@
 import {
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { getTimeDifferenceInSeconds } from '@utils';
+import { REQUEST } from '@nestjs/core';
 import * as bcrypt from 'bcrypt';
 import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -15,6 +16,7 @@ export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private tokenService: TokenService,
+    @Inject(REQUEST) private readonly request: any,
   ) {}
 
   saltOrRounds = 10;
@@ -68,17 +70,22 @@ export class AuthService {
 
       if (!user) throw new UnauthorizedException('Invalid Token');
 
-      await this.tokenService.setTokenInBlacklist(
-        refreshToken,
-        getTimeDifferenceInSeconds(payload.exp * 1000),
-      );
-
-      return this.tokenService.signTokenPair({
-        sub: user.id,
-        email: user.email,
-      });
+      return {
+        access_token: await this.tokenService.signAccessToken({
+          sub: user.id,
+          email: user.email,
+        }),
+      };
     } catch (err) {
       throw new UnauthorizedException(err?.message);
     }
+  }
+
+  async logout(refreshToken: string) {
+    if (this.request.headers?.authorization) {
+      const token = this.request.headers.authorization.split(' ')[1];
+      await this.tokenService.setTokenInBlacklist(token);
+    }
+    return this.tokenService.setTokenInBlacklist(refreshToken);
   }
 }
