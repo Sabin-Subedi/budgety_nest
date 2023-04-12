@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 export const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY;
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
@@ -17,3 +19,6 @@ export const EMAIL_SMTP_HOST = process.env.EMAIL_SMTP_HOST;
 export const EMAIL_SMTP_PORT = process.env.EMAIL_SMTP_PORT;
 export const EMAIL_SMTP_USER = process.env.EMAIL_SMTP_USER;
 export const EMAIL_SMTP_PASSWORD = process.env.EMAIL_SMTP_PASSWORD;
+
+export const BASE_PATH = join(__dirname, '..', '..', '..');
+console.log(join(BASE_PATH, 'public', 'templates'));

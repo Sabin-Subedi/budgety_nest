@@ -18,8 +18,6 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  saltOrRounds = 10;
-
   @Post('login')
   signIn(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.signIn(createAuthDto.email, createAuthDto.password);
@@ -44,5 +42,10 @@ export class AuthController {
     } catch (err) {
       throw new HttpException(err.message, HttpStatus.FAILED_DEPENDENCY);
     }
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() createAuthDto: any) {
+    return this.authService.forgotPassword(createAuthDto.email);
   }
 }

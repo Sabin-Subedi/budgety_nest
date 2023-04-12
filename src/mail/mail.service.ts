@@ -6,13 +6,17 @@ export class MailService {
   constructor(private mailerService: MailerService) {}
 
   async sendMail(email: string, name: string) {
-    await this.mailerService.sendMail({
-      to: email,
-      subject: 'Greeting from NestJS NodeMailer',
-      template: '/email',
-      context: {
-        name: name,
-      },
-    });
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        subject: 'Greeting from NestJS NodeMailer',
+        template: 'email',
+        context: {
+          name: name,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

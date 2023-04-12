@@ -5,9 +5,10 @@ import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
 import { PrismaService } from 'nestjs-prisma';
 import { TokenModule } from 'src/token/token.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
-  imports: [UsersModule, TokenModule],
+  imports: [UsersModule, TokenModule, MailModule],
   controllers: [AuthController],
   providers: [AuthService, UsersService, PrismaService],
   exports: [AuthService],

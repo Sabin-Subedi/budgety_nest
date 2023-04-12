@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import * as bcrypt from 'bcrypt';
+import { MailService } from 'src/mail/mail.service';
 import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly userService: UsersService,
     private tokenService: TokenService,
     @Inject(REQUEST) private readonly request: any,
+    private mailService: MailService,
   ) {}
 
   saltOrRounds = 10;
@@ -87,5 +89,10 @@ export class AuthService {
       await this.tokenService.setTokenInBlacklist(token);
     }
     return this.tokenService.setTokenInBlacklist(refreshToken);
+  }
+
+  async forgotPassword(email: string) {
+    this.mailService.sendMail(email, 'sabin');
+    return { message: 'Email sent' };
   }
 }

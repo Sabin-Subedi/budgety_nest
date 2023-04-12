@@ -13,6 +13,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import {
+  BASE_PATH,
   EMAIL_SMTP_HOST,
   EMAIL_SMTP_PASSWORD,
   EMAIL_SMTP_PORT,
@@ -47,19 +48,19 @@ import { UsersModule } from './users/users.module';
       useFactory: () => ({
         transport: {
           host: EMAIL_SMTP_HOST,
-          port: EMAIL_SMTP_PORT,
-          secure: true,
+          port: +EMAIL_SMTP_PORT,
+          secure: false,
           auth: {
             user: EMAIL_SMTP_USER,
             pass: EMAIL_SMTP_PASSWORD,
           },
         },
         defaults: {
-          from: 'No Reply <sendgrid_from_email_address>',
+          from: 'noreply@budgety.com',
         },
         template: {
           adapter: new PugAdapter(),
-          dir: join(__dirname, '../..', 'public', 'templates'),
+          dir: join(BASE_PATH, 'public', 'templates'),
           options: {
             strict: true,
           },
