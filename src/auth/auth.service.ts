@@ -96,6 +96,8 @@ export class AuthService {
     if (user) {
       await this.mailService.sendForgotPasswordEmail(email);
     }
-    return { message: 'Email is sent' };
+    return {
+      message: 'If the email exists, you will receive an email shortly',
+    };
   }
 }
