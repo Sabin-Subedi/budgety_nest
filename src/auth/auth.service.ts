@@ -92,7 +92,10 @@ export class AuthService {
   }
 
   async forgotPassword(email: string) {
-    await this.mailService.sendForgotPasswordEmail(email);
+    const user = await this.userService.findUserByEmail(email);
+    if (user) {
+      await this.mailService.sendForgotPasswordEmail(email);
+    }
     return { message: 'Email is sent' };
   }
 }
