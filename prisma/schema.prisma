@@ -26,6 +26,7 @@ model User {
   Transaction Transaction[]
   Category    Category[]
   UserRoles   UserRoles[]
+  ResetToken  ResetToken[]
 
   @@unique([is_deleted, deleted_at])
 }
@@ -109,4 +110,16 @@ model RolePermissions {
   permissionId String
 
   @@id([roleId, permissionId])
+}
+
+model ResetToken {
+  id         String   @id @default(uuid())
+  otp        String
+  token      String   @unique @default(uuid())
+  expiry     DateTime @default(now())
+  isExpired  Boolean  @default(false) @map("is_expired")
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @map("user_id")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

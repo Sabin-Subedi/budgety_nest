@@ -7,10 +7,12 @@ import {
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'nestjs-prisma';
 import { MailService } from 'src/mail/mail.service';
 import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
+import { generateOtpCode } from 'src/utils/default';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +21,7 @@ export class AuthService {
     private tokenService: TokenService,
     @Inject(REQUEST) private readonly request: any,
     private mailService: MailService,
+    private prisma: PrismaService,
   ) {}
 
   saltOrRounds = 10;
@@ -93,11 +96,25 @@ export class AuthService {
 
   async forgotPassword(email: string) {
     const user = await this.userService.findUserByEmail(email);
+
     if (user) {
+      const resetData = await this.prisma.resetToken.create({
+        data: {
+          userId: user.id,
+          otp: generateOtpCode(),
+          expiry: new Date(Date.now() + 1000 * 60 * 60),
+        },
+      });
+
+      if (!resetData)
+        throw new HttpException(
+          'Something went wrong',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+
       await this.mailService.sendForgotPasswordEmail(email);
+    } else {
+      throw new HttpException('Email does not exist', HttpStatus.BAD_REQUEST);
     }
-    return {
-      message: 'If the email exists, you will receive an email shortly',
-    };
   }
 }

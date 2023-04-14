@@ -20,3 +20,8 @@ export const getUrlPermission = (
 
   return [routeName, lowerCaseMethod];
 };
+
+export const generateOtpCode = (numOfDigits = 6) => {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  return numOfDigits > 0 ? otp.toString().slice(0, numOfDigits) : otp;
+};
