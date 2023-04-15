@@ -101,7 +101,7 @@ export class AuthService {
       const resetData = await this.prisma.resetToken.create({
         data: {
           userId: user.id,
-          otp: generateOtpCode(),
+          otp: generateOtpCode().toString(),
           expiry: new Date(Date.now() + 1000 * 60 * 60),
         },
       });
