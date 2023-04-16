@@ -28,6 +28,9 @@ import { TokenModule } from './token/token.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
 import { BullModule } from '@nestjs/bull';
+import { NestModule } from '@nestjs/common';
+import { MiddlewareConsumer } from '@nestjs/common';
+import { RequestMiddleware } from './middleware/request.middleware';
 
 @Module({
   imports: [
@@ -77,4 +80,8 @@ import { BullModule } from '@nestjs/bull';
     RolesService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestMiddleware).forRoutes('*');
+  }
+}
