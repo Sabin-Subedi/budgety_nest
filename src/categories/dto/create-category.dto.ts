@@ -1,10 +1,10 @@
 import { TransactionType } from '@prisma/client';
-import { IsNotEmpty, IsString, Min } from 'class-validator';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()
-  @Min(3)
+  @MinLength(3)
   name: string;
 
   @IsString()

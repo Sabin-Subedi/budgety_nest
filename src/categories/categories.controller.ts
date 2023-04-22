@@ -1,46 +1,58 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryEntity } from './entities/category.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('categories')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    console.log('createCategoryDto', createCategoryDto);
-    return this.categoriesService.create(createCategoryDto);
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
+    return new CategoryEntity(
+      await this.categoriesService.create(createCategoryDto),
+    );
   }
 
   @Get()
-  findAll() {
-    return this.categoriesService.findAll();
+  async findAll() {
+    const categories = await this.categoriesService.findAll();
+    return categories.map((category) => {
+      return new CategoryEntity(category);
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return new CategoryEntity(await this.categoriesService.findOne(id));
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoriesService.update(+id, updateCategoryDto);
+    return new CategoryEntity(
+      await this.categoriesService.update(id, updateCategoryDto),
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return new CategoryEntity(await this.categoriesService.remove(id));
   }
 }

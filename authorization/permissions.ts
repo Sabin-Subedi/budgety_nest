@@ -22,3 +22,5 @@ export const USERS_API = [
   ['users-detail', 'patch'],
   ['users-detail', 'delete'],
 ];
+
+export const COMPOSITE_API = [['data', 'post']];

@@ -58,7 +58,6 @@ export class RolesGuard implements CanActivate {
         },
       },
     });
-    console.log(userRoles);
 
     const userPermissions = [];
     userRoles.forEach((userRole) => {

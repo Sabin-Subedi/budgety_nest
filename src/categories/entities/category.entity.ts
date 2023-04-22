@@ -13,5 +13,7 @@ export class CategoryEntity implements CategorySchema {
   type: TransactionType;
   description: string;
   created_at: Date;
+
+  @Exclude()
   userId: string;
 }

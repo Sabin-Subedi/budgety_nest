@@ -26,6 +26,7 @@ import { RolesService } from './roles/roles.service';
 import { TokenModule } from './token/token.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
+import { DataModule } from './data/data.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { UsersModule } from './users/users.module';
     RolesModule,
     TransactionModule,
     MailModule,
+    DataModule,
   ],
   controllers: [AppController],
   providers: [
