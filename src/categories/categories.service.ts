@@ -16,7 +16,12 @@ export class CategoriesService {
   ) {}
 
   create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+    return this.prisma.category.create({
+      data: {
+        ...createCategoryDto,
+        userId: this.authenticatedUserId,
+      },
+    });
   }
 
   findAll() {

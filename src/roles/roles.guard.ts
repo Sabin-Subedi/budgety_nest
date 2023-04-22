@@ -42,29 +42,26 @@ export class RolesGuard implements CanActivate {
       req.method,
     );
 
-    const userData = await this.prisma.user.findUnique({
+    const userRoles = await this.prisma.userRoles.findMany({
       where: {
-        id: user.sub,
+        userId: user.sub,
       },
-      include: {
-        UserRoles: {
+      select: {
+        Role: {
           include: {
-            Role: {
+            RolePermissions: {
               include: {
-                RolePermissions: {
-                  include: {
-                    Permission: true,
-                  },
-                },
+                Permission: true,
               },
             },
           },
         },
       },
     });
+    console.log(userRoles);
 
     const userPermissions = [];
-    userData.UserRoles.forEach((userRole) => {
+    userRoles.forEach((userRole) => {
       userRole.Role.RolePermissions.forEach((rolePermission) => {
         userPermissions.push([
           rolePermission.Permission.url,
@@ -77,10 +74,10 @@ export class RolesGuard implements CanActivate {
       return permission.join('') === currentUrlPermission.join('');
     });
 
-    // if (!isAllowed)
-    //   throw new UnauthorizedException(
-    //     "You don't have permission to perform this action",
-    //   );
+    if (!isAllowed)
+      throw new UnauthorizedException(
+        "You don't have permission to perform this action",
+      );
 
     return true;
   }

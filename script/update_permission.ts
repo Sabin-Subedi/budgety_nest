@@ -34,7 +34,7 @@ async function createPermission() {
 
 async function assignPermissionToRole() {
   const roles = await prisma.role.findMany();
-  const permissions = await prisma.permission.findMany();
+  const permissions = await prisma.permission.findMany({});
   const rolePerms = [];
 
   Object.keys(RolePermissionMap).forEach((role) => {
@@ -66,6 +66,8 @@ async function assignPermissionToRole() {
 
   await prisma.rolePermissions.deleteMany();
   console.log('Deleted all role permissions');
+
+  console.log(rolePerms);
 
   const createdRolePerms = await prisma.rolePermissions.createMany({
     data: rolePerms,
