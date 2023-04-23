@@ -47,10 +47,7 @@ import { DataModule } from './data/data.module';
 
     BullModule.forRootAsync({
       useFactory: () => ({
-        redis: {
-          host: 'localhost',
-          port: 6379,
-        },
+        url: REDIS_URL,
       }),
     }),
     EventEmitterModule.forRoot({
