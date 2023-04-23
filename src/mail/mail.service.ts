@@ -42,7 +42,7 @@ export class MailService {
   }
 
   sendForgotPasswordEmail(email: string) {
-    return this.addEmailToQueue('forgot-password', {
+    return this.addEmailToQueue('send-mail', {
       to: email,
       subject: 'Password Reset',
       template: 'forgot-password',
@@ -55,7 +55,7 @@ export class MailService {
   }
 
   sendWelcomeEmail(email: string, name: string) {
-    return this.addEmailToQueue('welcome-email', {
+    return this.addEmailToQueue('send-mail', {
       to: email,
       subject: 'Welcome to Budgety',
       template: 'welcome',

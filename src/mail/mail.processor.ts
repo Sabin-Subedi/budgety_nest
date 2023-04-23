@@ -39,7 +39,7 @@ export class MailProcessor {
     );
   }
 
-  @Process('forgot-password')
+  @Process('send-mail')
   async forgotPassword(job: Job<SendMailConfig>) {
     console.log('Processor:@Process - Sending confirmation email.');
 
