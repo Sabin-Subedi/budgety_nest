@@ -1,4 +1,5 @@
 import {
+  ArrayMaxSize,
   IsArray,
   IsBoolean,
   IsNotEmpty,
@@ -56,5 +57,8 @@ export class CompositeRequestDto {
   @IsArray()
   @IsNotEmpty()
   @Validate(IsCompositeSubRequest)
+  @ArrayMaxSize(5, {
+    message: 'Composite request cannot have more than 5 sub requests',
+  })
   compositeRequest: CompositeSubRequest[];
 }

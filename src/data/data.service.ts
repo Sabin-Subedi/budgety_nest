@@ -16,37 +16,56 @@ export class DataService {
       (request) => this.requestData(request),
     );
 
-    const responses = await Promise.all(subRequestArray);
+    try {
+      const responses = await Promise.all(subRequestArray);
 
-    return responses.reduce((acc, curr: any) => {
-      curr?.referenceId && (acc[curr.referenceId] = curr);
-      delete curr.referenceId;
-      return acc;
-    }, {});
+      return responses.reduce((acc, curr: any) => {
+        curr?.referenceId && (acc[curr.referenceId] = curr);
+        delete curr.referenceId;
+        return acc;
+      }, {});
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   requestData(request) {
     const headers = {
       'Content-Type': 'application/json',
-      ...this.request.headers,
+      Authorization: this.request.headers.authorization || '',
       ...((typeof request.headers === 'object' && request.headers) || {}),
     };
     return new Promise(async (resolve, reject) => {
-      console.log('request', request);
-      const data = await firstValueFrom(
-        this.httpService.request({
-          method: request.method,
-          url: 'http://jsonplaceholder.typicode.com/posts/1',
-        }),
-      );
-      console.log('data', request);
+      try {
+        const data = await firstValueFrom(
+          this.httpService.request({
+            method: request.method,
+            url: 'http://192.168.1.69:3000' + request.url,
+            headers,
+          }),
+        );
 
-      resolve({
-        referenceId: request.refrenceId,
-        status: data.status || 200,
-        message: data.statusText || 'OK',
-        data: data.data,
-      });
+        resolve({
+          referenceId: request.refrenceId,
+          status: data?.status || 200,
+          message: data?.statusText || 'OK',
+          data: data?.data,
+        });
+      } catch (err) {
+        console.log(err);
+        resolve({
+          referenceId: request.refrenceId,
+          ...(err.response.data
+            ? err.response.data
+            : {
+                status: err?.response?.status || 500,
+                message:
+                  err?.response?.message ||
+                  err?.response?.statusText ||
+                  'Internal Server Error',
+              }),
+        });
+      }
     });
   }
 }
