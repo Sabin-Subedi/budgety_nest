@@ -103,5 +103,8 @@
     "migrate:postgres": "dotenv -e .env.development -- npx prisma migrate deploy",
     "update_permission": "ts-node script/update_permission.ts",
     "load:roles": "ts-node script/builtin_roles.ts"
+  },
+  "engines": {
+    "node": "18.12.1"
   }
 }
