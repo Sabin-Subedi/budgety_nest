@@ -53,4 +53,16 @@ export class MailService {
       },
     });
   }
+
+  sendWelcomeEmail(email: string, name: string) {
+    return this.addEmailToQueue('welcome-email', {
+      to: email,
+      subject: 'Welcome to Budgety',
+      template: 'welcome',
+      context: {
+        name,
+        email,
+      },
+    });
+  }
 }

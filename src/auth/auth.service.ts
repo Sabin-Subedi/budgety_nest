@@ -6,8 +6,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'nestjs-prisma';
+import { USER_CREATED } from 'src/constant/events';
 import { MailService } from 'src/mail/mail.service';
 import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -22,12 +24,14 @@ export class AuthService {
     @Inject(REQUEST) private readonly request: any,
     private mailService: MailService,
     private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   saltOrRounds = 10;
 
   async signIn(email: string, password: string) {
     const user = await this.userService.findUserByEmail(email);
+
     if (!user) throw new UnauthorizedException();
 
     const isPasswordCorrect = await new Promise((resolve, reject) => {
@@ -61,7 +65,9 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
     createUserDto.password = hashedPassword;
 
-    return this.userService.create(createUserDto);
+    const newUser = await this.userService.create(createUserDto);
+    this.eventEmitter.emitAsync(USER_CREATED, newUser);
+    return newUser;
   }
 
   async refreshToken(refreshToken: string) {

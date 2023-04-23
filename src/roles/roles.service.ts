@@ -18,4 +18,20 @@ export class RolesService {
   findMyRole() {
     return this.prisma.role.findMany();
   }
+
+  async assignRoleToUser(userId: string, rolesToAssign: string[]) {
+    const roles = await this.prisma.role.findMany();
+    const data = roles
+      .filter((role) => rolesToAssign.includes(role.name))
+      .map((role) => ({
+        userId,
+        roleId: role.id,
+      }));
+
+    const userRoles = await this.prisma.userRoles.createMany({
+      data,
+    });
+
+    return userRoles;
+  }
 }

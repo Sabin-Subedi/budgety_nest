@@ -34,7 +34,7 @@ model User {
 model Profile {
   id String @id @default(uuid())
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
 
@@ -46,14 +46,14 @@ enum TransactionType {
 model Transaction {
   id String @id @default(uuid())
 
-  user             User            @relation(fields: [userId], references: [id])
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String
   transaction_date DateTime        @default(now())
   transaction_type TransactionType @default(EXPENSE)
   amount           Int             @default(0)
   created_at       DateTime        @default(now())
   updated_at       DateTime?       @updatedAt
-  Category         Category?       @relation(fields: [categoryId], references: [id])
+  Category         Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   categoryId       String?
   description      String?
   note             String?
@@ -68,7 +68,7 @@ model Category {
   description String?
   created_at  DateTime        @default(now())
   Transaction Transaction[]
-  user        User?           @relation(fields: [userId], references: [id])
+  user        User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 
   @@unique([name, type])
@@ -86,9 +86,9 @@ model Role {
 }
 
 model UserRoles {
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
-  Role   Role   @relation(fields: [roleId], references: [id])
+  Role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId String
 
   @@id([userId, roleId])
@@ -104,7 +104,7 @@ model Permission {
 }
 
 model RolePermissions {
-  Role         Role       @relation(fields: [roleId], references: [id])
+  Role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId       String
   Permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
   permissionId String
@@ -118,7 +118,7 @@ model ResetToken {
   token      String   @unique @default(uuid())
   expiry     DateTime @default(now())
   isExpired  Boolean  @default(false) @map("is_expired")
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

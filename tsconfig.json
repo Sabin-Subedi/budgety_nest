@@ -22,6 +22,7 @@
       "@constants":["./src/constant/index"],
       "@utils":["./src/utils/index"],
       "@permissions":["./src/permissions/index"],
+      "@/":["./"]
     }
   }
 }
