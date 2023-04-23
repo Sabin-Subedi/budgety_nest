@@ -50,7 +50,7 @@ model Transaction {
   userId           String
   transaction_date DateTime        @default(now())
   transaction_type TransactionType @default(EXPENSE)
-  amount           BigInt          @default(0)
+  amount           Int             @default(0)
   created_at       DateTime        @default(now())
   updated_at       DateTime?       @updatedAt
   Category         Category?       @relation(fields: [categoryId], references: [id])

@@ -24,3 +24,10 @@ export const USERS_API = [
 ];
 
 export const COMPOSITE_API = [['data', 'post']];
+export const TRANSACTIONS_API = [
+  ['transactions', 'get'],
+  ['transactions', 'post'],
+  ['transactions-detail', 'get'],
+  ['transactions-detail', 'patch'],
+  ['transactions-detail', 'delete'],
+];
