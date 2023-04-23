@@ -1,3 +1,4 @@
+import { defaultCategories } from '@default';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { User } from '@prisma/client';
@@ -15,8 +16,16 @@ export class UserEventListener {
     private mailService: MailService,
   ) {}
   @OnEvent(USER_CREATED)
-  setupUserBasicData(payload: User) {
+  async setupUserBasicData(payload: User) {
     this.roleService.assignRoleToUser(payload.id, [Role.Client]);
     this.mailService.sendWelcomeEmail(payload.email, payload.name);
+    await this.prisma.category.createMany({
+      data: defaultCategories.map((category) => ({
+        ...category,
+        userId: payload.id,
+      })),
+    });
+
+    console.log(`${payload.name} has been created`);
   }
 }

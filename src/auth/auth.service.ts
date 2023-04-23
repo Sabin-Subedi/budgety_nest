@@ -32,7 +32,7 @@ export class AuthService {
   async signIn(email: string, password: string) {
     const user = await this.userService.findUserByEmail(email);
 
-    if (!user) throw new UnauthorizedException();
+    if (!user) throw new UnauthorizedException('Invalid Email or Password');
 
     const isPasswordCorrect = await new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, result) => {
