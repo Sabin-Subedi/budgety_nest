@@ -1,7 +1,7 @@
-import { RequestLoggerMiddleware } from './request.logger.middleware';
+import { RequestMiddleware } from './request.middleware';
 
-describe('RequestLoggerMiddleware', () => {
+describe('RequestMiddleware', () => {
   it('should be defined', () => {
-    expect(new RequestLoggerMiddleware()).toBeDefined();
+    expect(new RequestMiddleware()).toBeDefined();
   });
 });
