@@ -10,7 +10,12 @@ RUN pnpm install
 
 COPY . .
 
+ENV DATABASE_URL=skldjalsd
+RUN touch .env
+RUN echo ${DATABASE_URL} >> .env
 
+RUN npx prisma migrate deploy
+RUN npx prisma migrate resolve
 RUN npx prisma generate
 RUN pnpm run build
 
