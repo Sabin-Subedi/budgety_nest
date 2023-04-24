@@ -2,7 +2,7 @@ name: Budgety Dev Server
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 env:
   NODE_VERSION: 18.x
