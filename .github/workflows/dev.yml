@@ -10,11 +10,12 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - id: set-matrix
-        run: echo "::set-output name=matrix::${{secrets.DEV_SECRET}}"
+      - name: set-matrix
+        run: |
+          echo $DEV_SECRET
+        env:
+          DEV_SECRET: ${{secrets.DEV_SECRET}}
 
       - name: get matrix
         run: echo ${{ steps.set-matrix.outputs.matrix }}
