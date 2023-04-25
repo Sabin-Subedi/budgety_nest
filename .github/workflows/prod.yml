@@ -1,22 +1,12 @@
-name: Budgety Dev Server
+name: Budgety Production Server
 
 on:
-  push:
-    branches: [main]
-
-env:
-  NODE_VERSION: 18.x
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: set-matrix
-        run: |
-          echo ${{env.DEV_SECRET}}
-        env:
-          DEV_SECRET: 'hello'
-
       - name: Checkout
         uses: actions/checkout@v3
 
