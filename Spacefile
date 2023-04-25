@@ -1,0 +1,13 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: budgety-nestjs
+    src: ./
+    engine: nodejs16
+    public_routes:
+      - /*
+    commands: 
+      - npm run build
+    include:
+      - dist/
+    run: "npx nest start"
