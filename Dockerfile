@@ -9,7 +9,7 @@ RUN npm install -g pnpm
 RUN pnpm install
 
 ARG DATABASE_URL=
-ENV DATABASE_URL=${DATABASE_URL}
+RUN echo $DATABASE_URL >> .env
 # ARG REDIS_URL=
 # ARG ACCESS_TOKEN_SECRET=
 # ARG DEFAULT_JWT_SECRET=
@@ -33,6 +33,8 @@ ENV DATABASE_URL=${DATABASE_URL}
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 COPY . .
+
+
 
 RUN npx prisma migrate deploy
 # RUN npx prisma migrate resolve
