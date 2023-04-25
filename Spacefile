@@ -6,7 +6,8 @@ micros:
     engine: nodejs16
     public_routes:
       - /*
-    commands: 
+    commands:
+      - npm install
       - npm run build
     include:
       - dist/
