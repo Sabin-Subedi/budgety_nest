@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: set-matrix
         run: |
-          echo
+          echo ${{env.DEV_SECRET}}
         env:
-          DEV_SECRET: ${{secrets.DEV_SECRET}}
+          DEV_SECRET: 'hello'
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,6 +24,6 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy
-        run: flyctl deploy --remote-only
+        run: flyctl deploy --remote-only --build-arg APP_ENV=${{secrets.APP_ENV}}
         env:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}

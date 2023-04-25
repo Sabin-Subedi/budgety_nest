@@ -9,7 +9,8 @@ kill_timeout = 5
 primary_region = "sin"
 processes = []
 
-[build]
+[build.args]
+
 
 [env]
 

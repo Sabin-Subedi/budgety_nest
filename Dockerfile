@@ -8,11 +8,12 @@ RUN npm install -g pnpm
 
 RUN pnpm install
 
+ARG APP_ENV=KSJADLJ
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 COPY . .
 
-
+RUN echo ${APP_ENV} >> .env
 RUN npx prisma migrate deploy
 # RUN npx prisma migrate resolve
 RUN npx prisma generate
