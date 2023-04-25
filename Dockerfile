@@ -12,8 +12,7 @@ ARG APP_ENV=ksdjlas
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 COPY . .
-RUN touch .env
-RUN echo "${APP_ENV}" >> .env
+
 RUN npx prisma migrate deploy
 # RUN npx prisma migrate resolve
 RUN npx prisma generate

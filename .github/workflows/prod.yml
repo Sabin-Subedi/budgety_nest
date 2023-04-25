@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -14,7 +15,21 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy
-        run: flyctl deploy --remote-only --build-arg APP_ENV="${{env.APP_ENV}}"
+        run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}
-          APP_ENV: ${{secrets.APP_ENV}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          REDIS_URL: ${{secrets.REDIS_URL}}
+          ACCESS_TOKEN_SECRET: ${{secrets.ACCESS_TOKEN_SECRET}}
+          DEFAULT_JWT_SECRET: ${{secrets.DEFAULT_JWT_SECRET}}
+          EMAIL_SMTP_HOST: ${{secrets.EMAIL_SMTP_HOST}}
+          EMAIL_SMTP_PORT: ${{secrets.EMAIL_SMTP_PORT}}
+          EMAIL_SMTP_USER: ${{secrets.EMAIL_SMTP_USER}}
+          EMAIL_SMTP_PASSWORD: ${{secrets.EMAIL_SMTP_PASSWORD}}
+          REFRESH_TOKEN_SECRET: ${{secrets.REFRESH_TOKEN_SECRET}}
+          ACCESS_TOKEN_EXPIRY: ${{env.ACCESS_TOKEN_EXPIRY}}
+          DEFAULT_JWT_EXPIRY: ${{env.DEFAULT_JWT_EXPIRY}}
+          REFRESH_TOKEN_EXPIRY: ${{env.REFRESH_TOKEN_EXPIRY}}
+          DEFAULT_JWT_MAX_AGE: ${{env.DEFAULT_JWT_MAX_AGE}}
+          DEFAULT_JWT_ISSUER: ${{env.DEFAULT_JWT_ISSUER}}
+          DEFAULT_JWT_AUDIENCE: ${{env.DEFAULT_JWT_AUDIENCE}}
