@@ -23,6 +23,7 @@ const vaultToken = process.env.VAULT_TOKEN;
     }
     fs.writeFileSync(`.env`, envString);
   } catch (err) {
+    console.error(err);
     throw new Error(err.message || err);
   }
 })();
