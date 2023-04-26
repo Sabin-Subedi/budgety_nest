@@ -1,4 +1,3 @@
-import { BullModule } from '@nestjs/bull';
 import { CacheModule, CacheStore, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -11,13 +10,7 @@ import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
-import {
-  REDIS_HOST,
-  REDIS_PORT,
-  REDIS_URL,
-  REDIS_USER,
-  REDIS_USER_PWD,
-} from './constant/env';
+import { REDIS_URL } from './constant/env';
 import { DataModule } from './data/data.module';
 import { MailModule } from './mail/mail.module';
 import { RolesGuard } from './roles/roles.guard';
@@ -43,26 +36,6 @@ import { UsersModule } from './users/users.module';
         ttl: 60 * 60 * 24,
       }),
     }),
-
-    // BullModule.forRootAsync({
-    //   useFactory: () => ({
-    //     redis: {
-    //       host: REDIS_HOST,
-    //       port: +REDIS_PORT,
-    //       username: REDIS_USER,
-    //       password: REDIS_USER_PWD,
-    //     },
-    //     defaultJobOptions: {
-    //       removeOnComplete: true,
-    //       attempts: 2,
-    //     },
-    //     settings: {
-    //       drainDelay: 1000,
-    //       retryProcessDelay: 1000,
-    //       maxStalledCount: 2,
-    //     },
-    //   }),
-    // }),
     EventEmitterModule.forRoot({
       wildcard: true,
       delimiter: '.',
