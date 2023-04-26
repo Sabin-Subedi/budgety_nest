@@ -11,6 +11,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Import Secrets
+        id: import_secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{secrets.VAULT_ADDR}}
+          githubToken: ${{secrets.GITHUB_TOKEN}}
+          caCertificate: ${{ secrets.VAULT_CA_CERT }}
+          method: github
+
+      - name: Set Secrets
+        run: |
+          touch secrets.json
+          echo "${{ toJson(steps.import-secrets.outputs) }}" >> secrets.json
+
+      - name: secrets
+        run: echo "${{ toJson(steps.import_secrets.outputs) }}"
+
       - name: Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@master
 
