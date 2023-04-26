@@ -8,22 +8,14 @@ RUN npm install -g pnpm
 
 RUN pnpm install
 
-
-
-
-
-
-
-
-
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 COPY . .
 
-ARG DATABASE_URL=
-# ENV DATABASE_URL=${DATABASE_URL}
-RUN touch .env
-RUN echo "DATABASE_URL=$DATABASE_URL" >> .env
+ARG VAULT_TOKEN=klsadjlkasjd
+ENV VAULT_TOKEN=${DATABASE_URL}
+
+RUN node ./env_init.js
 
 RUN npx prisma migrate deploy
 # RUN npx prisma migrate resolve

@@ -11,19 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Import Secrets
-        id: import_secrets
-        uses: hashicorp/vault-action@v2
-        with:
-          url: 'https://vault.sabin-subedi.me'
-          caCertificate: ${{ secrets.VAULT_CA_CERT }}
-          token: ${{ secrets.VAULT_TOKEN }}
-
-      - name: Set Secrets
-        run: |
-          touch secrets.json
-          echo "${{ toJson(steps.import-secrets.outputs) }}" >> secrets.json
-
       - name: secrets
         run: echo "${{ toJson(steps.import_secrets.outputs) }}"
 
@@ -32,6 +19,6 @@ jobs:
 
       - name: Deploy
         run: |
-          flyctl deploy --remote-only --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --env REDIS_URL=${{secrets.REDIS_URL}} --env ACCESS_TOKEN_SECRET=${{secrets.ACCESS_TOKEN_SECRET}} --env DEFAULT_JWT_SECRET=${{secrets.DEFAULT_JWT_SECRET}} --env EMAIL_SMTP_HOST=${{secrets.EMAIL_SMTP_HOST}} --env EMAIL_SMTP_PORT=${{secrets.EMAIL_SMTP_PORT}} --env EMAIL_SMTP_USER=${{secrets.EMAIL_SMTP_USER}} --env EMAIL_SMTP_PASSWORD=${{secrets.EMAIL_SMTP_PASSWORD}} --env REFRESH_TOKEN_SECRET=${{secrets.REFRESH_TOKEN_SECRET}} --env ACCESS_TOKEN_EXPIRY=${{env.ACCESS_TOKEN_EXPIRY}} --env DEFAULT_JWT_EXPIRY=${{env.DEFAULT_JWT_EXPIRY}} --env REFRESH_TOKEN_EXPIRY=${{env.REFRESH_TOKEN_EXPIRY}} --env DEFAULT_JWT_MAX_AGE=${{env.DEFAULT_JWT_MAX_AGE}} --env DEFAULT_JWT_ISSUER=${{env.DEFAULT_JWT_ISSUER}} --env DEFAULT_JWT_AUDIENCE=${{env.DEFAULT_JWT_AUDIENCE}}
+          flyctl deploy --remote-only --build-arg VAULT_TOKEN=${{secrets.VAULT_TOKEN}}}
         env:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}
