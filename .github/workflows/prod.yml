@@ -16,9 +16,8 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{secrets.VAULT_ADDR}}
-          githubToken: ${{secrets.GITHUB_TOKEN}}
           caCertificate: ${{ secrets.VAULT_CA_CERT }}
-          method: github
+          token: ${{ secrets.VAULT_TOKEN }}
 
       - name: Set Secrets
         run: |
