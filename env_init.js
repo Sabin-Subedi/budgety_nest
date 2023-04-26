@@ -2,6 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 
 const vaultToken = process.env.VAULT_TOKEN;
+console.log('VAULT_TOKEN', vaultToken);
 
 (async () => {
   try {
