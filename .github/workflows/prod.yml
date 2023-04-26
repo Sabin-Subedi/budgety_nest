@@ -16,6 +16,7 @@ jobs:
 
       - name: Deploy
         run: |
-          flyctl deploy --remote-only --build-arg VAULT_TOKEN=${{secrets.VAULT_TOKEN}}}
+          flyctl deploy --remote-only --build-arg VAULT_TOKEN=${{env.VAULT_TOKEN}}}
         env:
           FLY_API_TOKEN: ${{secrets.FLY_API_TOKEN}}
+          VAULT_TOKEN: ${{secrets.VAULT_TOKEN}}
