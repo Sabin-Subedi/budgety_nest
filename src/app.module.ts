@@ -53,6 +53,7 @@ import { UsersModule } from './users/users.module';
           port: +REDIS_PORT,
           username: REDIS_USER,
           password: REDIS_USER_PWD,
+          lazyConnect: true,
         },
         defaultJobOptions: {
           timeout: 5000,
