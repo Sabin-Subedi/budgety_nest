@@ -17,7 +17,7 @@ ENV VAULT_TOKEN=${VAULT_TOKEN}
 
 RUN echo $VAULT_TOKEN
 
-RUN npx ts-node ./env_init.ts
+RUN pnpm dlx ts-node ./env_init.ts
 
 RUN npx prisma migrate deploy
 # RUN npx prisma migrate resolve
