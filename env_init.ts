@@ -1,8 +1,7 @@
 import axios from 'axios';
-import fs from 'fs';
+import * as fs from 'fs';
 
 const vaultToken = process.env.VAULT_TOKEN;
-console.log('VAULT_TOKEN', vaultToken);
 
 (async () => {
   try {
@@ -17,11 +16,13 @@ console.log('VAULT_TOKEN', vaultToken);
       },
     );
     const envData = env?.data?.data;
-    fs.writeFileSync(`./.env`, ``);
-    for (let key in envData) {
-      fs.appendFileSync(`./.env`, `\n${key}="${envData[key]}"`);
+    let envString = '';
+
+    for (const key in envData) {
+      envString += `${key}=${envData[key]}\n`;
     }
+    fs.writeFileSync(`.env`, envString);
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.message || err);
   }
 })();
