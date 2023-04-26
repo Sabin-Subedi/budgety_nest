@@ -119,6 +119,10 @@ export class AuthService {
         );
 
       await this.mailService.sendForgotPasswordEmail(email);
+
+      return {
+        message: 'Reset password link sent to your email',
+      };
     } else {
       throw new HttpException('Email does not exist', HttpStatus.BAD_REQUEST);
     }
