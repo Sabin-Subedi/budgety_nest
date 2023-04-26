@@ -38,7 +38,7 @@ import { MailProcessor } from './mail.processor';
         },
       }),
     }),
-    BullModule.registerQueueAsync({
+    BullModule.registerQueue({
       name: 'mailsend',
     }),
   ],

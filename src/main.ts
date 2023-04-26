@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public', 'static'));
   app.setBaseViewsDir(join(__dirname, '..', '..', 'public', 'templates'));
   app.setGlobalPrefix('/api');
-
+  app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -35,8 +35,6 @@ async function bootstrap() {
       P2025: HttpStatus.NOT_FOUND,
     }),
   );
-
-  app.useGlobalInterceptors(new ResponseInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('Budgety API')

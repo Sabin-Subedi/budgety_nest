@@ -44,28 +44,25 @@ import { UsersModule } from './users/users.module';
       }),
     }),
 
-    BullModule.forRootAsync({
-      useFactory: () => ({
-        redis: {
-          commandTimeout: 5000,
-          enableOfflineQueue: false,
-          host: REDIS_HOST,
-          port: +REDIS_PORT,
-          username: REDIS_USER,
-          password: REDIS_USER_PWD,
-          lazyConnect: true,
-        },
-        defaultJobOptions: {
-          timeout: 5000,
-          removeOnComplete: true,
-          attempts: 2,
-        },
-        settings: {
-          drainDelay: 1000,
-          retryProcessDelay: 1000,
-        },
-      }),
-    }),
+    // BullModule.forRootAsync({
+    //   useFactory: () => ({
+    //     redis: {
+    //       host: REDIS_HOST,
+    //       port: +REDIS_PORT,
+    //       username: REDIS_USER,
+    //       password: REDIS_USER_PWD,
+    //     },
+    //     defaultJobOptions: {
+    //       removeOnComplete: true,
+    //       attempts: 2,
+    //     },
+    //     settings: {
+    //       drainDelay: 1000,
+    //       retryProcessDelay: 1000,
+    //       maxStalledCount: 2,
+    //     },
+    //   }),
+    // }),
     EventEmitterModule.forRoot({
       wildcard: true,
       delimiter: '.',
