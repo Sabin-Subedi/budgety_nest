@@ -11,6 +11,9 @@ import { SendMailConfig } from './mail.interface';
 
 @Processor('mailsend')
 export class MailProcessor {
+  onModuleInit() {
+    console.log('MailProcessor has been initialized.');
+  }
   constructor(private readonly mailService: MailService) {}
 
   @OnQueueActive()

@@ -1,11 +1,5 @@
 import { BullModule } from '@nestjs/bull';
-import {
-  CacheModule,
-  CacheStore,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-} from '@nestjs/common';
+import { CacheModule, CacheStore, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -18,15 +12,14 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import { REDIS_URL } from './constant/env';
+import { DataModule } from './data/data.module';
 import { MailModule } from './mail/mail.module';
-import { RequestMiddleware } from './middleware/request.middleware';
 import { RolesGuard } from './roles/roles.guard';
 import { RolesModule } from './roles/roles.module';
 import { RolesService } from './roles/roles.service';
 import { TokenModule } from './token/token.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
-import { DataModule } from './data/data.module';
 
 @Module({
   imports: [
