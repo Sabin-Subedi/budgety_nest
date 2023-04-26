@@ -78,8 +78,4 @@ import { DataModule } from './data/data.module';
     RolesService,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RequestMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}

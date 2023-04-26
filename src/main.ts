@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { logger } from './middleware/logger.middleware';
 import { ResponseInterceptor } from './response/response.interceptor';
 
 async function bootstrap() {
@@ -12,8 +13,7 @@ async function bootstrap() {
     logger: ['error', 'warn', 'debug', 'log', 'verbose'],
   });
 
-  await app.init();
-
+  app.use(logger);
   app.setViewEngine('hbs');
   app.useStaticAssets(join(__dirname, '..', 'public', 'static'));
   app.setBaseViewsDir(join(__dirname, '..', '..', 'public', 'templates'));
