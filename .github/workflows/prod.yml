@@ -14,7 +14,7 @@ jobs:
       - name: Import Secrets
         id: import_secrets
         uses: hashicorp/vault-action@v2
-        with:
+        env:
           url: 'https://vault.sabin-subedi.me'
           caCertificate: ${{ secrets.VAULT_CA_CERT }}
           token: ${{ secrets.VAULT_TOKEN }}
