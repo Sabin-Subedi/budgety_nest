@@ -12,6 +12,8 @@ async function bootstrap() {
     logger: ['error', 'warn', 'debug', 'log', 'verbose'],
   });
 
+  await app.init();
+
   app.setViewEngine('hbs');
   app.useStaticAssets(join(__dirname, '..', 'public', 'static'));
   app.setBaseViewsDir(join(__dirname, '..', '..', 'public', 'templates'));
