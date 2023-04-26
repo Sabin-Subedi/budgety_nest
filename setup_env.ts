@@ -19,7 +19,7 @@ const vaultToken = process.env.VAULT_TOKEN;
     let envString = '';
 
     for (const key in envData) {
-      envString += `${key}="${envData[key]}\n"`;
+      envString += `${key}=${envData[key]}\n`;
     }
     fs.writeFileSync(`.env`, envString);
   } catch (err) {
