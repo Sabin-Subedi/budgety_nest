@@ -48,7 +48,7 @@
     "ioredis": "^5.3.1",
     "nestjs-prisma": "^0.20.0",
     "nodemailer": "^6.9.1",
-    "prisma": "^4.12.0",
+    "prisma": "^4.13.0",
     "redis": "^4.6.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0"

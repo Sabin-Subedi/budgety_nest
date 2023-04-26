@@ -1,20 +1,6 @@
 version: '3.0'
 
 services:
-  budgety_nestjs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-      - budgety_redis
-    restart: always
   postgres:
     image: postgres
     ports:

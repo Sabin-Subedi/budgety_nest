@@ -66,7 +66,7 @@ export class AuthService {
     createUserDto.password = hashedPassword;
 
     const newUser = await this.userService.create(createUserDto);
-    this.eventEmitter.emitAsync(USER_CREATED, newUser);
+    this.eventEmitter.emit(USER_CREATED, newUser);
     return newUser;
   }
 
