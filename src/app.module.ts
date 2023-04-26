@@ -11,7 +11,13 @@ import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
-import { REDIS_URL } from './constant/env';
+import {
+  REDIS_HOST,
+  REDIS_PORT,
+  REDIS_URL,
+  REDIS_USER,
+  REDIS_USER_PWD,
+} from './constant/env';
 import { DataModule } from './data/data.module';
 import { MailModule } from './mail/mail.module';
 import { RolesGuard } from './roles/roles.guard';
@@ -40,7 +46,23 @@ import { UsersModule } from './users/users.module';
 
     BullModule.forRootAsync({
       useFactory: () => ({
-        url: REDIS_URL,
+        redis: {
+          commandTimeout: 5000,
+          enableOfflineQueue: false,
+          host: REDIS_HOST,
+          port: +REDIS_PORT,
+          username: REDIS_USER,
+          password: REDIS_USER_PWD,
+        },
+        defaultJobOptions: {
+          timeout: 5000,
+          removeOnComplete: true,
+          attempts: 2,
+        },
+        settings: {
+          drainDelay: 1000,
+          retryProcessDelay: 1000,
+        },
       }),
     }),
     EventEmitterModule.forRoot({

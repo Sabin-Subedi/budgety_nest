@@ -15,6 +15,11 @@ export const BLACKLIST_TOKEN_INITIAL = process.env.BLACKLIST_TOKEN_INITIAL;
 
 export const REDIS_URL = process.env.REDIS_URL;
 
+export const REDIS_HOST = process.env.REDIS_HOST;
+export const REDIS_PORT = process.env.REDIS_PORT;
+export const REDIS_USER_PWD = process.env.REDIS_USER_PWD;
+export const REDIS_USER = process.env.REDIS_USER;
+
 export const EMAIL_SMTP_HOST = process.env.EMAIL_SMTP_HOST;
 export const EMAIL_SMTP_PORT = process.env.EMAIL_SMTP_PORT;
 export const EMAIL_SMTP_USER = process.env.EMAIL_SMTP_USER;
