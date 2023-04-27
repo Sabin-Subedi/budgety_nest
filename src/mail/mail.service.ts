@@ -6,9 +6,6 @@ import { SendMailConfig } from './mail.interface';
 
 @Injectable()
 export class MailService {
-  onModuleInit() {
-    console.log('MailService has been initialized.');
-  }
   constructor(
     private mailerService: MailerService,
     @InjectQueue('mailsend')

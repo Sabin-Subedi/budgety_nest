@@ -10,7 +10,13 @@ import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
-import { REDIS_URL } from './constant/env';
+import {
+  REDIS_HOST,
+  REDIS_PORT,
+  REDIS_URL,
+  REDIS_USER,
+  REDIS_USER_PWD,
+} from './constant/env';
 import { DataModule } from './data/data.module';
 import { MailModule } from './mail/mail.module';
 import { RolesGuard } from './roles/roles.guard';
@@ -19,6 +25,7 @@ import { RolesService } from './roles/roles.service';
 import { TokenModule } from './token/token.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -35,6 +42,20 @@ import { UsersModule } from './users/users.module';
         url: REDIS_URL,
         ttl: 60 * 60 * 24,
       }),
+    }),
+    BullModule.forRoot({
+      redis: {
+        password: REDIS_USER_PWD,
+        tls: {
+          requestCert: true,
+          rejectUnauthorized: true,
+          host: REDIS_HOST,
+          port: +REDIS_PORT,
+          timeout: 1000,
+        },
+        connectTimeout: 1000,
+        offlineQueue: false,
+      },
     }),
     EventEmitterModule.forRoot({
       wildcard: true,
