@@ -25,6 +25,7 @@ export class MailService {
         subject,
         template,
         context,
+
         ...props,
       });
 

@@ -28,6 +28,7 @@ import { MailProcessor } from './mail.processor';
         },
         defaults: {
           from: 'budgety@subedisabin.com.np',
+          sender: 'Budgety No-Reply',
         },
         template: {
           adapter: new HandlebarsAdapter(),
