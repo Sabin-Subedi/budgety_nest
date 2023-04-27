@@ -1,5 +1,5 @@
 import { defaultCategories } from '@default';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { User } from '@prisma/client';
 import { Role } from 'authorization/roles';
@@ -10,6 +10,7 @@ import { RolesService } from 'src/roles/roles.service';
 
 @Injectable()
 export class UserEventListener {
+  logger = new Logger('UserEventListener');
   constructor(
     private prisma: PrismaService,
     private roleService: RolesService,
@@ -17,15 +18,21 @@ export class UserEventListener {
   ) {}
   @OnEvent(USER_CREATED)
   async setupUserBasicData(payload: User) {
-    this.roleService.assignRoleToUser(payload.id, [Role.Client]);
-    this.mailService.sendWelcomeEmail(payload.email, payload.name);
-    await this.prisma.category.createMany({
-      data: defaultCategories.map((category) => ({
-        ...category,
-        userId: payload.id,
-      })),
-    });
+    try {
+      this.roleService.assignRoleToUser(payload.id, [Role.Client]);
+      this.mailService.sendWelcomeEmail(payload.email, payload.name);
+      await this.prisma.category.createMany({
+        data: defaultCategories.map((category) => ({
+          ...category,
+          userId: payload.id,
+        })),
+      });
 
-    console.log(`${payload.name} has been created`);
+      this.logger.log(
+        `@userCreated - User ${payload.id} has been setup successfully.`,
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

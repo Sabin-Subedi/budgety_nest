@@ -71,7 +71,7 @@ model Category {
   user        User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 
-  @@unique([name, type])
+  @@unique([userId, name, type])
 }
 
 model Role {

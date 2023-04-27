@@ -30,7 +30,7 @@ import { BullModule } from '@nestjs/bull';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env', '.env.development'],
+      envFilePath: ['.env'],
     }),
     PrismaModule.forRoot({
       isGlobal: true,
