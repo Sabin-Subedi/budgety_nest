@@ -28,6 +28,8 @@ export class MailService {
         ...props,
       });
 
+      console.log('mail send to', response);
+
       return response;
     } catch (err) {
       console.log(err);
@@ -35,9 +37,9 @@ export class MailService {
   }
 
   addEmailToQueue(queueName: string, data: SendMailConfig) {
+    console.log('addEmailToQueue', queueName, data);
     return this.mailQueue.add(queueName, data, {
       removeOnComplete: true,
-      attempts: 3,
     });
   }
 
