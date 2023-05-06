@@ -16,7 +16,7 @@ model User {
   name        String        @db.VarChar(255)
   email       String        @unique @db.VarChar(255)
   username    String        @unique @db.VarChar(255)
-  password    String
+  password    String?
   created_at  DateTime      @default(now())
   lastLogin   DateTime?     @updatedAt
   active      Boolean       @default(true)
@@ -27,9 +27,26 @@ model User {
   Category    Category[]
   UserRoles   UserRoles[]
   ResetToken  ResetToken[]
-  googleOauth Json
+  OAuth       OAuth[]
 
   @@unique([is_deleted, deleted_at])
+}
+
+enum OAuthProvider {
+  GOOGLE
+  FACEBOOK
+}
+
+model OAuth {
+  id         String        @id @default(uuid())
+  provider   OAuthProvider
+  providerId String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  created_at DateTime      @default(now())
+  updated_at DateTime      @updatedAt
+
+  @@unique([provider, providerId, userId])
 }
 
 model Profile {

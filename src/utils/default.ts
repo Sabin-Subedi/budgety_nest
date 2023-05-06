@@ -1,3 +1,5 @@
+import suid from 'short-uuid';
+
 export const getUrlPermission = (
   urlName: string,
   handlerName: string,
@@ -26,4 +28,8 @@ export const getUrlPermission = (
 export const generateOtpCode = (numOfDigits = 6) => {
   const otp = Math.floor(100000 + Math.random() * 900000);
   return numOfDigits > 0 ? otp.toString().slice(0, numOfDigits) : otp;
+};
+
+export const generateUsernameWithPrefix = (prefix: string) => {
+  return `${prefix}_${suid.generate()}`;
 };

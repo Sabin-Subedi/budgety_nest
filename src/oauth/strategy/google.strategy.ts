@@ -21,6 +21,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
     try {
+      console.log('profile', profile._json);
       return { profile, accessToken, refreshToken };
     } catch (err) {
       throw new UnauthorizedException();
