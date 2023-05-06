@@ -7,8 +7,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { OAuthProvider } from '@prisma/client';
 import { Profile, Strategy } from 'passport-facebook';
-import { OAuthUserDto } from 'src/users/dto/create-oauth-user.dto';
 import { generateUsernameWithPrefix } from 'src/utils/default';
+import { CreateOauthDto } from '../dto/create-oauth.dto';
 import { OauthService } from '../oauth.service';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       if (!fProfile.email || !fProfile.id) {
         throw new UnauthorizedException('Invalid facebook profile');
       }
-      const val = new OAuthUserDto({
+      const val = new CreateOauthDto({
         email: fProfile.email || '',
         name: fProfile.name || '',
         username: generateUsernameWithPrefix(fProfile.name) || '',
