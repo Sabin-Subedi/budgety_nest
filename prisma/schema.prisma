@@ -27,6 +27,7 @@ model User {
   Category    Category[]
   UserRoles   UserRoles[]
   ResetToken  ResetToken[]
+  googleOauth Json
 
   @@unique([is_deleted, deleted_at])
 }

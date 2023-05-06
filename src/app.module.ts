@@ -26,6 +26,7 @@ import { TokenModule } from './token/token.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
 import { BullModule } from '@nestjs/bull';
+import { OauthModule } from './oauth/oauth.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { BullModule } from '@nestjs/bull';
     TransactionModule,
     MailModule,
     DataModule,
+    OauthModule,
   ],
   controllers: [AppController],
   providers: [

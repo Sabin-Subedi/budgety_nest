@@ -1,5 +1,7 @@
 import { join } from 'path';
 
+export const APP_PORT = process.env.APP_PORT;
+
 export const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY;
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
@@ -25,5 +27,14 @@ export const EMAIL_SMTP_PORT = process.env.EMAIL_SMTP_PORT;
 export const EMAIL_SMTP_USER = process.env.EMAIL_SMTP_USER;
 export const EMAIL_SMTP_PASSWORD = process.env.EMAIL_SMTP_PASSWORD;
 
+export const BASE_OAUTH_URL = process.env.BASE_OAUTH_URL;
+
+export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+export const GOOGLE_SCOPE = ['openid', 'email', 'profile'];
+
+export const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
+export const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
+
 export const BASE_PATH = join(__dirname, '..', '..', '..');
-console.log(join(BASE_PATH, 'public', 'templates'));

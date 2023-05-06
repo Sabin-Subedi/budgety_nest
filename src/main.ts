@@ -7,6 +7,7 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 import { logger } from './middleware/logger.middleware';
 import { ResponseInterceptor } from './response/response.interceptor';
+import { APP_PORT } from './constant/env';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -45,6 +46,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, document);
 
-  await app.listen(3000);
+  await app.listen(APP_PORT || 3000);
 }
 bootstrap();
