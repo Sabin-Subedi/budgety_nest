@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { USER_CREATED } from 'src/constant/events';
 import { TokenService } from 'src/token/token.service';
 import { CreateOauthDto } from './dto/create-oauth.dto';
-import { User } from '@prisma/client';
 
 @Injectable()
 export class OauthService {
