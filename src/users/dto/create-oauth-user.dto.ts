@@ -26,9 +26,9 @@ export class OAuthUserDto {
   username: string;
 
   @IsNotEmpty()
-  provider: OAuthProvider;
+  OAuthProvider: OAuthProvider;
 
   @IsNotEmpty()
   @IsString()
-  providerId: string;
+  OAuthProviderId: string;
 }

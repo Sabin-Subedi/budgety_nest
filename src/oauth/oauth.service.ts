@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { PrismaService } from 'nestjs-prisma';
+import { USER_CREATED } from 'src/constant/events';
 import { CreateOauthDto } from './dto/create-oauth.dto';
-import { UpdateOauthDto } from './dto/update-oauth.dto';
 
 @Injectable()
 export class OauthService {
-  create(createOauthDto: CreateOauthDto) {
-    return 'This action adds a new oauth';
-  }
+  constructor(
+    private prisma: PrismaService,
+    private eventEmitter: EventEmitter2,
+  ) {}
+  async createOauth(createOauthDto: CreateOauthDto) {
+    const { OAuthProvider, OAuthProviderId, ...extraData } = createOauthDto;
 
-  findAll() {
-    return `This action returns all oauth`;
-  }
+    const oAuthUser = await this.prisma.user.create({
+      data: {
+        ...extraData,
+        OAuth: {
+          create: {
+            providerId: OAuthProviderId,
+            provider: OAuthProvider,
+          },
+        },
+      },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} oauth`;
-  }
+    this.eventEmitter.emit(USER_CREATED, oAuthUser);
 
-  update(id: number, updateOauthDto: UpdateOauthDto) {
-    return `This action updates a #${id} oauth`;
+    return oAuthUser;
   }
+  async findOrCreateUserByOauth(oauthMethodData: CreateOauthDto) {
+    const { OAuthProvider, OAuthProviderId } = oauthMethodData;
+    const user = await this.prisma.user.findFirst({
+      where: {
+        OAuth: {
+          some: {
+            providerId: OAuthProviderId,
+            provider: OAuthProvider,
+          },
+        },
+      },
+    });
+    if (user) {
+      return user;
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} oauth`;
+    return this.createOauth(oauthMethodData);
   }
 }

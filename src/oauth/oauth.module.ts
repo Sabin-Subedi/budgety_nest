@@ -5,6 +5,7 @@ import { FacebookStrategy } from './strategy/facebook.strategy';
 import { GoogleStrategy } from './strategy/google.strategy';
 
 @Module({
+  imports: [],
   controllers: [OauthController],
   providers: [OauthService, GoogleStrategy, FacebookStrategy],
 })

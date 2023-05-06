@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { OAuthProvider } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+import { OAuthUserDto } from './dto/create-oauth-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -92,42 +92,5 @@ export class UsersService {
         deleted_at: new Date(),
       },
     });
-  }
-
-  async findOrCreateUserByOauthId(
-    oauthId: string,
-    oauthMethod: OAuthProvider,
-    oauthMethodData: any,
-  ) {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        OAuth: {
-          some: {
-            providerId: oauthId,
-            provider: oauthMethod,
-          },
-        },
-      },
-    });
-    if (user) {
-      return user;
-    }
-
-    //   return this.prisma.user.create({
-    //     data: {
-    //       email: oauthMethodData.email,
-    //       name: oauthMethodData.name,
-
-    //       OAuth: {
-    //         create: {
-    //           providerId: oauthId,
-    //           provider: oauthMethod,
-    //         },
-    //       },
-    //     },
-    //   });
-    // }
-
-    return 'NO USER FOUND';
   }
 }

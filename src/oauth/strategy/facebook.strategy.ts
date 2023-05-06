@@ -9,10 +9,11 @@ import { OAuthProvider } from '@prisma/client';
 import { Profile, Strategy } from 'passport-facebook';
 import { OAuthUserDto } from 'src/users/dto/create-oauth-user.dto';
 import { generateUsernameWithPrefix } from 'src/utils/default';
+import { OauthService } from '../oauth.service';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
-  constructor() {
+  constructor(private readonly oauthService: OauthService) {
     super({
       clientID: FACEBOOK_CLIENT_ID,
       clientSecret: FACEBOOK_CLIENT_SECRET,
@@ -23,18 +24,22 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    const fProfile = profile._json;
-    if (!fProfile.email || !fProfile.id) {
-      throw new UnauthorizedException('Invalid facebook profile');
-    }
-    const val = new OAuthUserDto({
-      email: fProfile.email || '',
-      name: fProfile.name || '',
-      username: generateUsernameWithPrefix(fProfile.name) || '',
-      provider: OAuthProvider.FACEBOOK,
-      providerId: fProfile.id,
-    });
+    try {
+      const fProfile = profile._json;
+      if (!fProfile.email || !fProfile.id) {
+        throw new UnauthorizedException('Invalid facebook profile');
+      }
+      const val = new OAuthUserDto({
+        email: fProfile.email || '',
+        name: fProfile.name || '',
+        username: generateUsernameWithPrefix(fProfile.name) || '',
+        OAuthProvider: OAuthProvider.FACEBOOK,
+        OAuthProviderId: fProfile.id,
+      });
 
-    return { profile, accessToken, refreshToken };
+      return await this.oauthService.findOrCreateUserByOauth(val);
+    } catch (e) {
+      throw new UnauthorizedException(e.message);
+    }
   }
 }

@@ -34,6 +34,9 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException('Invalid Email or Password');
 
+    if (!user.password)
+      throw new UnauthorizedException('Invalid Email or Password');
+
     const isPasswordCorrect = await new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) reject(err);

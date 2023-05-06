@@ -1,4 +1,4 @@
-import suid from 'short-uuid';
+import ShortUniqueId from 'short-unique-id';
 
 export const getUrlPermission = (
   urlName: string,
@@ -31,5 +31,6 @@ export const generateOtpCode = (numOfDigits = 6) => {
 };
 
 export const generateUsernameWithPrefix = (prefix: string) => {
-  return `${prefix}_${suid.generate()}`;
+  const uid = new ShortUniqueId({ length: 10 });
+  return `${prefix}_${uid()}`;
 };
