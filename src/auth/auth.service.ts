@@ -55,7 +55,6 @@ export class AuthService {
         sub: user.id,
         email: user.email,
       })),
-      refresh_expiry: process.env.REFERESH_TOKEN_EXPIRY,
     };
   }
 

@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaService } from 'nestjs-prisma';
 import { USER_CREATED } from 'src/constant/events';
+import { TokenService } from 'src/token/token.service';
 import { CreateOauthDto } from './dto/create-oauth.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class OauthService {
   constructor(
     private prisma: PrismaService,
     private eventEmitter: EventEmitter2,
+    private tokenService: TokenService,
   ) {}
   async createOauth(createOauthDto: CreateOauthDto) {
     const { OAuthProvider, OAuthProviderId, ...extraData } = createOauthDto;
@@ -30,8 +33,9 @@ export class OauthService {
     return oAuthUser;
   }
   async findOrCreateUserByOauth(oauthMethodData: CreateOauthDto) {
+    let user: User | null = null;
     const { OAuthProvider, OAuthProviderId } = oauthMethodData;
-    const user = await this.prisma.user.findFirst({
+    user = await this.prisma.user.findFirst({
       where: {
         OAuth: {
           some: {
@@ -41,10 +45,15 @@ export class OauthService {
         },
       },
     });
-    if (user) {
-      return user;
+    if (!user) {
+      user = await this.createOauth(oauthMethodData);
     }
 
-    return this.createOauth(oauthMethodData);
+    const tokenPair = await this.tokenService.signTokenPair({
+      sub: user.id,
+      email: user.email,
+    });
+
+    return tokenPair;
   }
 }
